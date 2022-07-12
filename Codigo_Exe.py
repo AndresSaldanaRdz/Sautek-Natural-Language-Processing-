@@ -111,36 +111,55 @@ def tokenize1_2_3_4(pdfFileContent,requerimientos):
     
     return round(final_score),final_matches
 
-#requerimientos = vacanteCSV_str("Requisitos_Vacantes.csv","Igualador")
-#pdfFileContent = getPDFFileContentToTXT('CVI1.pdf')
-#os.remove("pdfContenido.txt") #removemos el archivo de texto creado (opcional)
-#i,j = tokenize1_2_3_4(pdfFileContent,requerimientos)
-#print(i)
-
 ##############################################################################
 
-def clicked():
-    label.configure(text = "u gay")
+def clicked1():
+    global file1
+    file1 = filedialog.askopenfilename(title = "Seleccionar archivo CV", filetypes=[("archivos pdf","*.pdf")])
+    label1.configure(text = "archivo seleccionado")
+
+def clicked2():
+    global file2
+    file2 = filedialog.askopenfilename(title = "Seleccionar archivo Vacantes", filetypes=[("archivos csv","*.csv")])
+    label2.configure(text = "archivo seleccionado")
+
+def clicked3():
+    requerimientos = vacanteCSV_str(file2,"Igualador")
+    pdfFileContent = getPDFFileContentToTXT(file1)
+    os.remove("pdfContenido.txt")
+    i,j = tokenize1_2_3_4(pdfFileContent,requerimientos)
+    print(i)
+    label3.configure(text = i)
 
 window = tkinter.Tk()
 window.title("Sautek")
 window.geometry("550x250")
 
-window.filename = filedialog.askopenfilename(title = "Seleccionar archivo CV", filetypes=[("archivos pdf","*.pdf")])
-
 #button
-bt = Button(window, text="Enter", command = clicked)
-bt.grid(column = 1, row = 0)
+bt1 = Button(window, text="CV", command = clicked1)
+bt1.grid(column = 1, row = 0)
+
+bt2 = Button(window, text="Vacantes", command = clicked2)
+bt2.grid(column = 1, row = 1)
+
+bt3 = Button(window, text="Resultados", command = clicked3)
+bt3.grid(column = 1, row = 2)
 
 #label
-label = tkinter.Label(window, text = "Hello world", font = ("Arial Bold", 50))
-label.grid(column = 2, row = 0)
+label1 = tkinter.Label(window, text = " ", font = ("Arial ", 20))
+label1.grid(column = 2, row = 0)
+
+label2 = tkinter.Label(window, text = " ", font = ("Arial ", 20))
+label2.grid(column = 2, row = 1)
+
+label3 = tkinter.Label(window, text = " ", font = ("Arial ", 20))
+label3.grid(column = 2, row = 2)
 
 #combobox
 combo = Combobox(window)
 combo['values']= (1, 2, 3, 4, 5, "Text")
 combo.current(3)
-combo.grid(column=1, row=1)
+combo.grid(column=1, row=4)
 
 window.mainloop()
 
