@@ -1,3 +1,4 @@
+from unicodedata import name
 import PyPDF2
 import nltk
 from nltk.tokenize import word_tokenize
@@ -11,6 +12,8 @@ import tkinter
 from tkinter import Button
 from tkinter.ttk import *
 from tkinter import filedialog
+from tkinter import StringVar
+from tkinter import font 
 
 def getPDFFileContentToTXT(pdfFile):
     myPDFFile = PyPDF2.PdfFileReader(pdfFile)
@@ -111,55 +114,71 @@ def tokenize1_2_3_4(pdfFileContent,requerimientos):
     
     return round(final_score),final_matches
 
-##############################################################################
+############################################################################## gui tkinter 
 
 def clicked1():
     global file1
     file1 = filedialog.askopenfilename(title = "Seleccionar archivo CV", filetypes=[("archivos pdf","*.pdf")])
-    label1.configure(text = "archivo seleccionado")
+    label1.configure(text = os.path.basename(file1))
 
 def clicked2():
     global file2
+    global diff_vacantes
     file2 = filedialog.askopenfilename(title = "Seleccionar archivo Vacantes", filetypes=[("archivos csv","*.csv")])
-    label2.configure(text = "archivo seleccionado")
+    label2.configure(text = os.path.basename(file2))
+    diff_vacantes = pd.read_csv(file2) #conseguimos los nombres de las columnas del cv para poder ponerlos en el combobox
+    diff_vacantes = diff_vacantes.columns.tolist() 
+
+    #combo
+    combo.configure(value = diff_vacantes)
+    
+
 
 def clicked3():
-    requerimientos = vacanteCSV_str(file2,"Igualador")
+    requerimientos = vacanteCSV_str(file2, str(combo_var.get()))
     pdfFileContent = getPDFFileContentToTXT(file1)
     os.remove("pdfContenido.txt")
     i,j = tokenize1_2_3_4(pdfFileContent,requerimientos)
-    print(i)
-    label3.configure(text = i)
+    jj = "| "
+    for o in j:
+        jj += o + " | "
+
+    label3.configure(text = "El curriculum tiene: " + str(i) + "% de exactitud con los requerimientos")
+    label4.configure(text = jj)
 
 window = tkinter.Tk()
 window.title("Sautek")
 window.geometry("550x250")
+anchura_bottones = 9
+font_labels = ("Futura", 18)
 
 #button
-bt1 = Button(window, text="CV", command = clicked1)
+bt1 = Button(window, text="CV", command = clicked1, width = anchura_bottones)
 bt1.grid(column = 1, row = 0)
 
-bt2 = Button(window, text="Vacantes", command = clicked2)
+bt2 = Button(window, text="Vacantes", command = clicked2, width = anchura_bottones)
 bt2.grid(column = 1, row = 1)
 
-bt3 = Button(window, text="Resultados", command = clicked3)
-bt3.grid(column = 1, row = 2)
+bt3 = Button(window, text="Resultados", command = clicked3, width = anchura_bottones)
+bt3.grid(column = 1, row = 3)
 
 #label
-label1 = tkinter.Label(window, text = " ", font = ("Arial ", 20))
+label1 = tkinter.Label(window, text = " ", font = font_labels)
 label1.grid(column = 2, row = 0)
 
-label2 = tkinter.Label(window, text = " ", font = ("Arial ", 20))
+label2 = tkinter.Label(window, text = " ", font = font_labels)
 label2.grid(column = 2, row = 1)
 
-label3 = tkinter.Label(window, text = " ", font = ("Arial ", 20))
-label3.grid(column = 2, row = 2)
+label3 = tkinter.Label(window, text = " ", font = font_labels)
+label3.grid(column = 2, row = 3)
+
+label4 = tkinter.Label(window, text = " ", font = font_labels)
+label4.grid(column = 2, row = 4)
 
 #combobox
-combo = Combobox(window)
-combo['values']= (1, 2, 3, 4, 5, "Text")
-combo.current(3)
-combo.grid(column=1, row=4)
+combo_var = StringVar()
+combo = Combobox(window, width = 10, textvariable = combo_var)
+combo.grid(column=1, row=2)
 
 window.mainloop()
 
