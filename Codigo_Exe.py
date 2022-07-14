@@ -8,12 +8,6 @@ from nltk.stem import SnowballStemmer
 from nltk.corpus import stopwords
 import os
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-import tkinter
-from tkinter import Button
-from tkinter.ttk import *
-from tkinter import filedialog
-from tkinter import StringVar
-from tkinter import font 
 
 def getPDFFileContentToTXT(pdfFile):
     myPDFFile = PyPDF2.PdfFileReader(pdfFile)
@@ -116,6 +110,10 @@ def tokenize1_2_3_4(pdfFileContent,requerimientos):
 
 ############################################################################## gui tkinter 
 
+from tkinter import *
+from tkinter import ttk
+from tkinter import filedialog
+
 def clicked1():
     global file1
     file1 = filedialog.askopenfilename(title = "Seleccionar archivo CV", filetypes=[("archivos pdf","*.pdf")])
@@ -140,45 +138,67 @@ def clicked3():
     os.remove("pdfContenido.txt")
     i,j = tokenize1_2_3_4(pdfFileContent,requerimientos)
     jj = "| "
+    count1 = 0
     for o in j:
-        jj += o + " | "
-
+        if count1 <= 5:
+            jj += o + " | "
+        if count1 == 5:
+            jj += "\n| "
+            jj += o + " | "
+            count1 = 0
+        count1 += 1
+    
     label3.configure(text = "El curriculum tiene: " + str(i) + "% de exactitud con los requerimientos")
     label4.configure(text = jj)
 
-window = tkinter.Tk()
-window.title("Sautek")
-window.geometry("550x250")
+azul_claro  = "#16aff5"
+azul_oscuro =  "#0e78a8"
+blanco =  "#feffff"
+
+window = Tk()
+window.title("Sautek Procesamiento de lenguajes naturales")
+window.geometry("825x275")
+window.configure(bg = azul_oscuro)
 anchura_bottones = 9
 font_labels = ("Futura", 18)
+font_buttons = ("Futura", 14)
 
 #button
-bt1 = Button(window, text="CV", command = clicked1, width = anchura_bottones)
-bt1.grid(column = 1, row = 0)
+#bt1 = Button(window, text="CV", command = clicked1, width = anchura_bottones, highlightbackground = azul_oscuro)
+#bt1.place(relx = 0.1, rely = 0.1, anchor = "w")
 
-bt2 = Button(window, text="Vacantes", command = clicked2, width = anchura_bottones)
-bt2.grid(column = 1, row = 1)
+bt1 = ttk.Button(window, text="CV", command = clicked1, width = anchura_bottones)
+bt1.place(relx = 0.1, rely = 0.1, anchor = "w")
 
-bt3 = Button(window, text="Resultados", command = clicked3, width = anchura_bottones)
-bt3.grid(column = 1, row = 3)
+bt2 = ttk.Button(window, text="Vacantes", command = clicked2, width = anchura_bottones)
+bt2.place(relx = 0.1, rely = 0.3, anchor = "w")
+
+bt3 = ttk.Button(window, text="Resultados", command = clicked3, width = anchura_bottones)
+bt3.place(relx = 0.1, rely = 0.7, anchor = "w")
 
 #label
-label1 = tkinter.Label(window, text = " ", font = font_labels)
-label1.grid(column = 2, row = 0)
 
-label2 = tkinter.Label(window, text = " ", font = font_labels)
-label2.grid(column = 2, row = 1)
+label1 = Label(window, text = " ", font = font_labels, bg = azul_oscuro, fg = azul_claro)
+label1.place(relx = 0.3, rely = 0.1, anchor = "w")
 
-label3 = tkinter.Label(window, text = " ", font = font_labels)
-label3.grid(column = 2, row = 3)
+label2 = Label(window, text = " ", font = font_labels, bg = azul_oscuro, fg = azul_claro)
+label2.place(relx = 0.3, rely = 0.3, anchor = "w")
 
-label4 = tkinter.Label(window, text = " ", font = font_labels)
-label4.grid(column = 2, row = 4)
+label3 = Label(window, text = " ", font = font_labels, bg = azul_oscuro, fg= blanco)
+label3.place(relx = 0.3, rely = 0.5, anchor = "w")
+
+label4 = Label(window, text = " ", font = font_labels, bg = azul_oscuro, fg = blanco)
+label4.place(relx = 0.3, rely = 0.7, anchor = "w")
+
+style= ttk.Style()
+style.theme_use('classic')
+style.configure("TCombobox", fieldbackground= blanco, background= blanco, arrowcolor = azul_claro)
+style.configure("Tbutton")
 
 #combobox
 combo_var = StringVar()
-combo = Combobox(window, width = 10, textvariable = combo_var)
-combo.grid(column=1, row=2)
+combo = ttk.Combobox(window, width = 11, textvariable = combo_var, style  = "TCombobox")
+combo.place(relx = 0.1, rely = 0.5, anchor = "w")
 
 window.mainloop()
 
