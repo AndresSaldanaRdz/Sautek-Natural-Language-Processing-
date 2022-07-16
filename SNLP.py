@@ -1,14 +1,14 @@
+#!/usr/bin/env python3
 
-from unicodedata import name
-import PyPDF2
+import pandas as pd
 import nltk
 from nltk.tokenize import word_tokenize
 import re
-import pandas as pd
 from nltk.stem import SnowballStemmer
 from nltk.corpus import stopwords
 import os
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+import PyPDF2
 
 def getPDFFileContentToTXT(pdfFile):
     myPDFFile = PyPDF2.PdfFileReader(pdfFile)
@@ -203,7 +203,7 @@ combo.place(relx = 0.1, rely = 0.5, anchor = "w")
 
 window.mainloop()
 
-# pyinstaller --onefile --windowed --icon=logo.png Codigo_Exe.py
+# pyinstaller --onefile --windowed --icon=logo.icns SNLP.py
 # /Users/andressaldana/Documents/GitHub/Sautek-Natural-language-programming/Codigo_Exe.py 
 
 
