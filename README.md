@@ -8,4 +8,4 @@ TO RUN THE EXE YOU NEED: a CSV file with the job requirements a candidates CV in
 1. You can use the .CSV attached as en example of how the job requirements should be listed
 2. You can use any resume, as long as its in PDF format
 
-The actual EXE is called SNLP.EXE, the code is called SNLP.py 
+The actual EXE is too large to upload, but you can run the .py file in any computer with python installed
