@@ -168,18 +168,18 @@ def clicked3():
     salida = open("Resultados.csv", mode = "w", newline = "", encoding = "utf-8")
     csv_writer = csv.writer(salida, delimiter = ",")
     for i in llaves:
-        csv_writer.writerow([i, " Puntuacion: ", str(dict_final[i][0]) + "%", "Requisitos encontrados: "] + dict_final[i][1])
+        csv_writer.writerow([i, " Puntuación: ", str(dict_final[i][0]) + "%", "Requisitos encontrados: "] + dict_final[i][1])
     salida.close()
 
-    label3.configure(text = "Archivo Resultados.csv Generado")
-    label4.configure(text = os.getcwd())
+    label3.configure(text = "Archivo - Resultados.csv - Generado")
+    label4.configure(text = "Ubicación: " + os.getcwd())
 
 azul_claro  = "#16aff5"
 azul_oscuro =  "#0e78a8"
 blanco =  "#feffff"
 
 window = Tk()
-window.title("Sautek Procesamiento de lenguajes naturales")
+window.title("Sautek procesamiento de lenguajes naturales")
 window.geometry("825x275")
 window.configure(bg = azul_oscuro)
 anchura_bottones = 9
